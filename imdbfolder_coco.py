@@ -69,6 +69,7 @@ def prepare_data_loaders(dataset_names, data_dir, imdb_dir, shuffle_train=True, 
     imdb_names = [imdb_names_train, imdb_names_val]
 
     with open(data_dir + 'decathlon_mean_std.pickle', 'rb') as handle:
+        print(data_dir + 'decathlon_mean_std.pickle')
         dict_mean_std = pickle.load(handle)
     
     for i in range(len(dataset_names)):
