@@ -130,7 +130,7 @@ del net_old
 start_epoch = 0
 best_acc = 0  # best test accuracy
 results = np.zeros((4,start_epoch+args.nb_epochs,len(args.num_classes)))
-all_tasks = range(len(args.dataset))
+all_tasks = list(range(len(args.dataset)))
 np.random.seed(1993)
 
 if args.use_cuda:
@@ -145,7 +145,7 @@ for name, m in net.named_modules():
 
 
 args.criterion = nn.CrossEntropyLoss()
-optimizer = sgd.SGD(filter(lambda p: p.requires_grad, net.parameters()), lr=args.lr, momentum=0.9, weight_decay=args.wd)
+optimizer = sgd.SGD([p for p in net.parameters() if p.requires_grad], lr=args.lr, momentum=0.9, weight_decay=args.wd)
 
 
 print("Start training")
@@ -164,5 +164,5 @@ for epoch in range(start_epoch, start_epoch+args.nb_epochs):
     for i in all_tasks:
         results[2:4,epoch,i] = [test_loss[i],test_acc[i]]
     np.save(args.svdir+'/results_'+'adapt'+str(args.seed)+args.dropout+args.mode+args.proj+''.join(args.dataset)+'wd3x3_'+str(args.wd3x3)+'_wd1x1_'+str(args.wd1x1)+str(args.wd)+str(args.nb_epochs)+str(args.step1)+str(args.step2),results)
-    print('Epoch lasted {0}'.format(time.time()-st_time))
+    print(('Epoch lasted {0}'.format(time.time()-st_time)))
 

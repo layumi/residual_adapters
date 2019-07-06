@@ -26,7 +26,8 @@ class ImageFolder(data.Dataset):
             labels=None ,imgs=None,loader=pil_loader,skip_label_indexing=0):
         
         if len(imgs) == 0:
-            raise RuntimeError
+            raise(RuntimeError("Found 0 images in subfolders of: " + root + "\n"
+                               "Supported image extensions are: " + ",".join(IMG_EXTENSIONS)))
 
         self.root = root
         if index is not None:
@@ -68,7 +69,7 @@ def prepare_data_loaders(dataset_names, data_dir, imdb_dir, shuffle_train=True, 
     imdb_names = [imdb_names_train, imdb_names_val]
 
     with open(data_dir + 'decathlon_mean_std.pickle', 'rb') as handle:
-        print((data_dir + 'decathlon_mean_std.pickle'))
+        print(data_dir + 'decathlon_mean_std.pickle')
         dict_mean_std = pickle.load(handle)
     
     for i in range(len(dataset_names)):
